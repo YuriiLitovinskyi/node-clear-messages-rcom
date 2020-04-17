@@ -1,6 +1,6 @@
 {
   "name": "clear-messages-rcom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "app to delete buffer of messages from rcom db",
   "main": "server.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
-    "mongodb": "2.2.33"
+    "mongodb": "2.2.33",
+    "prompt-confirm": "^2.0.4"
   }
 }

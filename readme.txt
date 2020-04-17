@@ -1,4 +1,5 @@
   npm install --save mongodb  (version "2.2.33"!!!)
+  npm i prompt-confirm
   npm install -g pkg
 Create .exe file for win x64:
   pkg server.js

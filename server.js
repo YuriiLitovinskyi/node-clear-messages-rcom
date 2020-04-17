@@ -1,39 +1,34 @@
+const MongoClient = require('mongodb').MongoClient;
+const Confirm = require('prompt-confirm');
+const prompt = new Confirm('Delete all messages?');
+
 const url = 'mongodb://localhost:27017/DBClientsPPK';
 
-const MongoClient = require('mongodb').MongoClient;
-
-const clearMessages = () => {
+(() => {
     MongoClient.connect(url, async (err, db) => {
         if(err) {            
-            console.log('No connection to Database! Please start MongoDB service on default port 27017!');
-            console.log(' ');           
+            console.log('No connection to Database! Please start MongoDB service on default port 27017!\n');       
             
             console.log(err);
-            await sleep(15000);
-        };
-    
-        console.log(`Switched to ${db.databaseName} database`);
-    
-        db.collection('Messages', async (err, collection) => {
-            if(err) {
-                console.log(err);
-                await sleep(15000);
-            };
-    
-            collection.remove({}, async (err, result) => {
-                if(err) {
-                    console.log(err);
-                    await sleep(15000);
-                };
-    
-                console.log(`Collection Messages is deleted! Result: ${result}`);
-                db.close();
+            await sleep(10000);
+        } else {
+            console.log('Connected to database successfully!');
 
-                await sleep(10000);
-            });
-        });
+            countMessages(db, () => {
+                setTimeout(() => {
+                    prompt.ask((answer) => {                       
+                        if(answer){
+                            deleteMessages(db);
+                        } else {
+                            db.close();
+                            return null;
+                        }               
+                    });                    
+                  }, 1000);                 
+            });                             
+        };      
     });
-};
+})();
 
 const sleep = (timeout) => {
     return new Promise((resolve) => {
@@ -41,4 +36,39 @@ const sleep = (timeout) => {
     });
 };
 
-clearMessages();
+const deleteMessages = (db) => {
+    db.collection('Messages', async (err, collection) => {
+        if(err) {
+            console.log(err);
+            await sleep(10000);
+        };
+        collection.remove({}, async (err, result) => {
+            if(err) {
+                console.log(err);
+                await sleep(10000);
+            };
+
+            console.log(`All messages were deleted! Result: ${result}`);
+            db.close();
+
+            await sleep(5000);
+        });
+    });
+};
+
+const countMessages = (db, callback) => {
+    setTimeout(() => {
+        db.collection('Messages', async (err, collection) => {
+            if(err) {
+                console.log(err);
+                await sleep(10000);
+            };
+    
+            const messagesCount = await collection.count();
+    
+            console.log(`Messages detected: ${messagesCount}\n`);
+        });
+        
+        callback();
+      }, 1000);    
+};
