@@ -40,11 +40,13 @@ const deleteMessages = (db) => {
     db.collection('Messages', async (err, collection) => {
         if(err) {
             console.log(err);
+            db.close();
             await sleep(10000);
         };
         collection.remove({}, async (err, result) => {
             if(err) {
                 console.log(err);
+                db.close();
                 await sleep(10000);
             };
 
@@ -61,6 +63,7 @@ const countMessages = (db, callback) => {
         db.collection('Messages', async (err, collection) => {
             if(err) {
                 console.log(err);
+                db.close();
                 await sleep(10000);
             };
     
