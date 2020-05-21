@@ -7,3 +7,7 @@ Create .exe file for win x86:
   pkg server.js --targets=latest-win-x86
 
 https://www.youtube.com/watch?v=lIpmtAs-wGk
+
+Утиліта для видалення черги повідомлень з РКОМу.
+Запускається на хості з РКОМом.
+РКОМ та Монго повинні бути запущені.
